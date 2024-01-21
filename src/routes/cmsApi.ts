@@ -13,7 +13,7 @@ const BASE_URI = process.env.CMS_BASE_URI;
 const api = apiAdapter(BASE_URI || "");
 
 const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
-    const { method, path, body } = req;
+    const { method, path, body, query } = req;
     const token = req.headers.authorization || "";
 
     const headers: Record<string, string> = {
@@ -26,6 +26,7 @@ const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
         url: path,
         data: body,
         headers,
+        params: query,
     };
 
     api

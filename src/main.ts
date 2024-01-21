@@ -10,6 +10,7 @@ import responseTime from "response-time";
 
 import router from "./routes/api";
 import cmsRouter from "./routes/cmsApi";
+import ecommerceRoutes from "./routes/ecommerceApi";
 const winston = require("winston");
 
 const prisma = new PrismaClient();
@@ -65,6 +66,7 @@ app.use(
 
 app.use("/api/v1", router);
 app.use("/api/v1", cmsRouter);
+app.use("/api/v1", ecommerceRoutes);
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 5000;
