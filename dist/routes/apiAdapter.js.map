@@ -1,0 +1,1 @@
+{"version":3,"file":"apiAdapter.js","sourceRoot":"","sources":["../../src/routes/apiAdapter.ts"],"names":[],"mappings":";;;;;AAAA,kDAA0B;AAE1B,MAAM,UAAU,GAAG,CAAC,OAAgB,EAAE,EAAE;IACpC,OAAO,eAAK,CAAC,MAAM,CAAC;QAClB,OAAO,EAAE,OAAO;KACjB,CAAC,CAAC;AACL,CAAC,CAAC;AAEF,kBAAe,UAAU,CAAC"}
