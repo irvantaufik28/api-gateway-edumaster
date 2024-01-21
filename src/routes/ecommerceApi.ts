@@ -4,7 +4,9 @@ import dotenv from "dotenv";
 import { ResponseError } from "../error/response-error";
 import { Request, Response, NextFunction } from "express";
 import { AxiosRequestConfig } from "axios";
-
+import jwt from "jsonwebtoken";
+import { getToken } from "../auth/helper";
+import authorized from "../middleware/jwt"
 dotenv.config();
 
 const ecommerceRoutes = express.Router();
@@ -13,9 +15,10 @@ const BASE_URI = process.env.ECOMMERCE_BASE_URI;
 const api = apiAdapter(BASE_URI || "");
 
 const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
-    const { method, path, body, query } = req;
+  const { method, path, body, query } = req;
   const token = req.headers.authorization || "";
-
+  const tokenDecode = jwt.decode(getToken(token));
+  const user = tokenDecode;
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Authorization: token,
@@ -26,7 +29,7 @@ const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
     url: path,
     data: body,
     headers,
-    params: query
+    params: { ...query, user: JSON.stringify(user) },
   };
 
   api
@@ -65,7 +68,7 @@ const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // PRODUCT
-ecommerceRoutes.get("/product", handleApiRequest);
+ecommerceRoutes.get("/product", authorized.allowedUser, handleApiRequest);
 ecommerceRoutes.get("/product/:id", handleApiRequest);
 ecommerceRoutes.post("/product", handleApiRequest);
 ecommerceRoutes.put("/product/:id", handleApiRequest);
@@ -83,5 +86,12 @@ ecommerceRoutes.get("/category/:id", handleApiRequest);
 ecommerceRoutes.post("/category", handleApiRequest);
 ecommerceRoutes.put("/category/:id", handleApiRequest);
 ecommerceRoutes.delete("/category/:id", handleApiRequest);
+
+// CART
+ecommerceRoutes.get("/cart", handleApiRequest);
+ecommerceRoutes.get("/cart/:id", handleApiRequest);
+ecommerceRoutes.post("/cart", handleApiRequest);
+ecommerceRoutes.put("/cart/:id", handleApiRequest);
+ecommerceRoutes.delete("/cart/:id", handleApiRequest);
 
 export default ecommerceRoutes;

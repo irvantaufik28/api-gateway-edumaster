@@ -18,6 +18,12 @@ const generateAccessToken = (data: any) => {
   return accessToken;
 };
 
+const getToken = (authHeader: string) => {
+  const splitHeader = authHeader.split(' ');
+  return splitHeader.length > 1 ? splitHeader[1] : splitHeader[0];
+}
+
 export  {
   generateAccessToken,
+  getToken
 };

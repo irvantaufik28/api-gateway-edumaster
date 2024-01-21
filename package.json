@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node dist/src/main.js",
+    "start": "node dist/main.js",
     "dev": "nodemon src/main.ts",
     "ts.check": "tsc --project tsconfig.json",
     "build-prisma": "prisma generate",
