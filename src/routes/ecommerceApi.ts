@@ -89,9 +89,13 @@ ecommerceRoutes.delete("/category/:id", handleApiRequest);
 
 // CART
 ecommerceRoutes.get("/cart", handleApiRequest);
-ecommerceRoutes.get("/cart/:id", handleApiRequest);
 ecommerceRoutes.post("/cart", handleApiRequest);
-ecommerceRoutes.put("/cart/:id", handleApiRequest);
-ecommerceRoutes.delete("/cart/:id", handleApiRequest);
+ecommerceRoutes.delete("/cart/cart-detail/:id", handleApiRequest);
+
+// CART
+ecommerceRoutes.get("/order/", handleApiRequest);
+ecommerceRoutes.get("/order/:id", handleApiRequest);
+ecommerceRoutes.post("/order", handleApiRequest);
+ecommerceRoutes.put("/order/:id", handleApiRequest);
 
 export default ecommerceRoutes;

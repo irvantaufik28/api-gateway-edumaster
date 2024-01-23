@@ -49,7 +49,7 @@ const login = async (req: any, res: Response, next: NextFunction): Promise<any> 
 
         }
 
-        let user_detail = user.StaffUser?.[0].staff ?? user.StudentUser?.[0].student ?? {};
+        let user_detail = user.StaffUser?.[0]?.staff ?? user.StudentUser?.[0]?.student ?? {};
        
         const roles: string[] = user?.user_roles.map(item => item.role.name) || [];
         let permissionsData: Set<string> = new Set();
