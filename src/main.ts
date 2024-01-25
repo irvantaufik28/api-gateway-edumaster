@@ -57,12 +57,12 @@ app.use(
 
 app.use(cors());
 
-app.use(
-  rateLimit({
-    windowMs: 5 * 60 * 1000,
-    max: 100,
-  })
-);
+// app.use(
+//   rateLimit({
+//     windowMs: 5 * 60 * 1000,
+//     max: 100,
+//   })
+// );
 
 app.use("/api/v1", router);
 app.use("/api/v1", cmsRouter);

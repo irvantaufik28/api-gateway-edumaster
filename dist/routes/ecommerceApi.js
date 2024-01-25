@@ -7,6 +7,8 @@ const express_1 = __importDefault(require("express"));
 const apiAdapter_1 = __importDefault(require("./apiAdapter"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const response_error_1 = require("../error/response-error");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const helper_1 = require("../auth/helper");
 dotenv_1.default.config();
 const ecommerceRoutes = express_1.default.Router();
 const BASE_URI = process.env.ECOMMERCE_BASE_URI;
@@ -14,6 +16,8 @@ const api = (0, apiAdapter_1.default)(BASE_URI || "");
 const handleApiRequest = (req, res, next) => {
     const { method, path, body, query } = req;
     const token = req.headers.authorization || "";
+    const tokenDecode = jsonwebtoken_1.default.decode((0, helper_1.getToken)(token));
+    const user = tokenDecode;
     const headers = {
         "Content-Type": "application/json",
         Authorization: token,
@@ -23,7 +27,7 @@ const handleApiRequest = (req, res, next) => {
         url: path,
         data: body,
         headers,
-        params: query
+        params: Object.assign(Object.assign({}, query), { user: JSON.stringify(user) }),
     };
     api
         .request(axiosConfig)
@@ -69,5 +73,14 @@ ecommerceRoutes.get("/category/:id", handleApiRequest);
 ecommerceRoutes.post("/category", handleApiRequest);
 ecommerceRoutes.put("/category/:id", handleApiRequest);
 ecommerceRoutes.delete("/category/:id", handleApiRequest);
+// CART
+ecommerceRoutes.get("/cart", handleApiRequest);
+ecommerceRoutes.post("/cart", handleApiRequest);
+ecommerceRoutes.delete("/cart/cart-detail/:id", handleApiRequest);
+// CART
+ecommerceRoutes.get("/order/", handleApiRequest);
+ecommerceRoutes.get("/order/:id", handleApiRequest);
+ecommerceRoutes.post("/order", handleApiRequest);
+ecommerceRoutes.put("/order/:id", handleApiRequest);
 exports.default = ecommerceRoutes;
 //# sourceMappingURL=ecommerceApi.js.map

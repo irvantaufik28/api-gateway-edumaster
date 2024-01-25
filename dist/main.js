@@ -17,7 +17,6 @@ const logging_1 = require("./application/logging");
 const cors_1 = __importDefault(require("cors"));
 const error_middleware_1 = require("./middleware/error-middleware");
 const client_1 = require("@prisma/client");
-const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 const express_winston_1 = __importDefault(require("express-winston"));
 const helmet_1 = __importDefault(require("helmet"));
 const response_time_1 = __importDefault(require("response-time"));
@@ -60,10 +59,12 @@ app.use(express_winston_1.default.logger({
     },
 }));
 app.use((0, cors_1.default)());
-app.use((0, express_rate_limit_1.default)({
-    windowMs: 5 * 60 * 1000,
-    max: 100,
-}));
+// app.use(
+//   rateLimit({
+//     windowMs: 5 * 60 * 1000,
+//     max: 100,
+//   })
+// );
 app.use("/api/v1", api_1.default);
 app.use("/api/v1", cmsApi_1.default);
 app.use("/api/v1", ecommerceApi_1.default);

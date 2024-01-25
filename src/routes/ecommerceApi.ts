@@ -68,7 +68,7 @@ const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
 };
 
 // PRODUCT
-ecommerceRoutes.get("/product", authorized.allowedUser, handleApiRequest);
+ecommerceRoutes.get("/product", handleApiRequest);
 ecommerceRoutes.get("/product/:id", handleApiRequest);
 ecommerceRoutes.post("/product", handleApiRequest);
 ecommerceRoutes.put("/product/:id", handleApiRequest);

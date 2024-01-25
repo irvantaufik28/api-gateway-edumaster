@@ -146,4 +146,9 @@ cmsRouter.post("/structure-curriculum", handleApiRequest);
 cmsRouter.put("/structure-curriculum/:id", handleApiRequest);
 cmsRouter.delete("/structure-curriculum/:id", handleApiRequest);
 
+
+cmsRouter.get("/teacher-schedule/:teacher_id", handleApiRequest);
+cmsRouter.post("/upload", handleApiRequest);
+
+
 export default cmsRouter;

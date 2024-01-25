@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.generateAccessToken = void 0;
+exports.getToken = exports.generateAccessToken = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
@@ -20,4 +20,9 @@ const generateAccessToken = (data) => {
     return accessToken;
 };
 exports.generateAccessToken = generateAccessToken;
+const getToken = (authHeader) => {
+    const splitHeader = authHeader.split(' ');
+    return splitHeader.length > 1 ? splitHeader[1] : splitHeader[0];
+};
+exports.getToken = getToken;
 //# sourceMappingURL=helper.js.map

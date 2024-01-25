@@ -17,7 +17,7 @@ const response_error_1 = require("../error/response-error");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const helper_1 = require("./helper");
 const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g;
     try {
         const user = yield database_1.prismaClient.user.findFirst({
             where: {
@@ -56,12 +56,12 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         if (!verifyPassword) {
             throw new response_error_1.ResponseError(404, "username or passwod wrong!");
         }
-        let user_detail = (_d = (_b = (_a = user.StaffUser) === null || _a === void 0 ? void 0 : _a[0].staff) !== null && _b !== void 0 ? _b : (_c = user.StudentUser) === null || _c === void 0 ? void 0 : _c[0].student) !== null && _d !== void 0 ? _d : {};
+        let user_detail = (_f = (_c = (_b = (_a = user.StaffUser) === null || _a === void 0 ? void 0 : _a[0]) === null || _b === void 0 ? void 0 : _b.staff) !== null && _c !== void 0 ? _c : (_e = (_d = user.StudentUser) === null || _d === void 0 ? void 0 : _d[0]) === null || _e === void 0 ? void 0 : _e.student) !== null && _f !== void 0 ? _f : {};
         const roles = (user === null || user === void 0 ? void 0 : user.user_roles.map(item => item.role.name)) || [];
         let permissionsData = new Set();
         for (const roles of user === null || user === void 0 ? void 0 : user.user_roles) {
             for (const permissions of roles.role.role_permission) {
-                const permissionName = (_e = permissions.permission) === null || _e === void 0 ? void 0 : _e.name;
+                const permissionName = (_g = permissions.permission) === null || _g === void 0 ? void 0 : _g.name;
                 if (permissionName && !permissionsData.has(permissionName)) {
                     permissionsData.add(permissionName);
                 }
