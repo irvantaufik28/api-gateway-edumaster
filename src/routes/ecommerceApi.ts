@@ -33,38 +33,34 @@ const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
   };
 
   api
-    .request(axiosConfig)
-    .then((resp) => {
-      return res.json(resp.data);
-    })
-    .catch((error) => {
-      console.error(
-        `API request failed [${method} ${path}]:`,
-        error.response.data
-      );
+  .request(axiosConfig)
+  .then((resp) => {
+    return res.json(resp.data);
+  })
+  .catch((error) => {
+    console.error(
+      `API request failed [${method} ${path}]:`,
+      error.response ? error.response.data : error.message
+    );
 
-      let errorMessage = "An error occurred";
-      let statusCode = 500;
+    let errorMessage = "An error occurred";
+    let statusCode = 500;
 
-      if (error.response && error.response.data) {
-        if (Array.isArray(error.response.data.message)) {
-          errorMessage = error.response.data.message.join(", ");
-        }
-
-        if (error.response.data.message) {
-          errorMessage = error.response.data.message;
-        }
-
-        if (error.response.data.statusCode) {
-          statusCode = error.response.data.statusCode;
-        }
-
-        const errorResponse = new ResponseError(statusCode, errorMessage);
-        next(errorResponse);
-      } else {
-        next(error);
+    if (error.response && error.response.data) {
+      if (Array.isArray(error.response.data.message)) {
+        errorMessage = error.response.data.message.join(", ");
+      } else if (error.response.data.message) {
+        errorMessage = error.response.data.message;
       }
-    });
+
+      if (error.response.data.statusCode) {
+        statusCode = error.response.data.statusCode;
+      }
+    }
+
+    const errorResponse = new ResponseError(statusCode, errorMessage);
+    next(errorResponse);
+  });
 };
 
 // PRODUCT

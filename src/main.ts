@@ -67,6 +67,10 @@ app.use(cors());
 app.use("/api/v1", router);
 app.use("/api/v1", cmsRouter);
 app.use("/api/v1", ecommerceRoutes);
+app.use((err :any, req :any, res: any, next : any) => {
+  console.error(err.stack);
+  res.status(500).send('service down!');
+});
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 5000;
