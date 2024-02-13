@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import { ResponseError } from "../error/response-error";
 import { Request, Response, NextFunction } from "express";
 import { AxiosRequestConfig } from "axios";
-
+import jwt from "jsonwebtoken";
+import { getToken } from "../auth/helper";
 dotenv.config();
 
 const cmsRouter = express.Router();
@@ -15,7 +16,8 @@ const api = apiAdapter(BASE_URI || "");
 const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
     const { method, path, body, query } = req;
     const token = req.headers.authorization || "";
-
+    const tokenDecode = jwt.decode(getToken(token));
+    const user = tokenDecode;
     const headers: Record<string, string> = {
         "Content-Type": "application/json",
         Authorization: token,
@@ -26,7 +28,7 @@ const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
         url: path,
         data: body,
         headers,
-        params: query,
+        params: { ...query, user: JSON.stringify(user) },
     };
 
     api
@@ -35,10 +37,7 @@ const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
             return res.json(resp.data);
         })
         .catch((error) => {
-            console.error(
-                `API request failed [${method} ${path}]:`,
-                error.response.data.errors
-            );
+            
             if (error.response && error.response.data && error.response.data.errors) {
                 const errorResponse = new ResponseError(
                     error.response.status,
@@ -54,6 +53,7 @@ const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
 cmsRouter.get("/class/major-list", handleApiRequest);
 
 cmsRouter.get("/user", handleApiRequest);
+cmsRouter.get("/user/profil", handleApiRequest);
 cmsRouter.get("/user/:id", handleApiRequest);
 
 // classroom route
