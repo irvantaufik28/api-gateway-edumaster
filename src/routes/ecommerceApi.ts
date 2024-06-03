@@ -94,6 +94,8 @@ ecommerceRoutes.get("/order/:id", handleApiRequest);
 ecommerceRoutes.post("/order", handleApiRequest);
 ecommerceRoutes.put("/order/:id", handleApiRequest);
 
+// ORDER
+ecommerceRoutes.put("/order/order-cancel/:id", handleApiRequest);
 
 // PAYMENT
 ecommerceRoutes.get("/payment/:id", handleApiRequest);

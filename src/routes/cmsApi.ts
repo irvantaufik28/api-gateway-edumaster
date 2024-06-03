@@ -14,40 +14,39 @@ const BASE_URI = process.env.CMS_BASE_URI;
 const api = apiAdapter(BASE_URI || "");
 
 const handleApiRequest = (req: Request, res: Response, next: NextFunction) => {
-    const { method, path, body, query } = req;
-    const token = req.headers.authorization || "";
-    const tokenDecode = jwt.decode(getToken(token));
-    const user = tokenDecode;
-    const headers: Record<string, string> = {
-        "Content-Type": "application/json",
-        Authorization: token,
-    };
+  const { method, path, body, query } = req;
+  const token = req.headers.authorization || "";
+  const tokenDecode = jwt.decode(getToken(token));
+  const user = tokenDecode;
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    Authorization: token,
+  };
 
-    const axiosConfig: AxiosRequestConfig = {
-        method,
-        url: path,
-        data: body,
-        headers,
-        params: { ...query, user: JSON.stringify(user) },
-    };
+  const axiosConfig: AxiosRequestConfig = {
+    method,
+    url: path,
+    data: body,
+    headers,
+    params: { ...query, user: JSON.stringify(user) },
+  };
 
-    api
-        .request(axiosConfig)
-        .then((resp) => {
-            return res.json(resp.data);
-        })
-        .catch((error) => {
-            
-            if (error.response && error.response.data && error.response.data.errors) {
-                const errorResponse = new ResponseError(
-                    error.response.status,
-                    error.response.data.errors
-                );
-                next(errorResponse);
-            } else {
-                next(error);
-            }
-        });
+  api
+    .request(axiosConfig)
+    .then((resp) => {
+      return res.json(resp.data);
+    })
+    .catch((error) => {
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errorResponse = new ResponseError(
+          error.response.status,
+          error.response.data.errors
+        );
+        next(errorResponse);
+      } else {
+        next(error);
+      }
+    });
 };
 
 cmsRouter.get("/class/major-list", handleApiRequest);
@@ -127,13 +126,14 @@ cmsRouter.delete("/teacher/course/:id", handleApiRequest);
 
 // classroom schedule route
 cmsRouter.get("/classroom-schedule", handleApiRequest);
+cmsRouter.get("/classroom-schedule/list/teacher/:id", handleApiRequest);
 cmsRouter.get("/classroom-schedule/:id", handleApiRequest);
 cmsRouter.post("/classroom-schedule", handleApiRequest);
 cmsRouter.post("/classroom-schedule/create-many", handleApiRequest);
 cmsRouter.post("/classroom-schedule/structure-curriculum", handleApiRequest);
 cmsRouter.post(
-    "/classroom-schedule/structure-curriculum-template",
-    handleApiRequest
+  "/classroom-schedule/structure-curriculum-template",
+  handleApiRequest
 );
 cmsRouter.put("/classroom-schedule/:id", handleApiRequest);
 cmsRouter.delete("/classroom-schedule/:id", handleApiRequest);
@@ -146,9 +146,7 @@ cmsRouter.post("/structure-curriculum", handleApiRequest);
 cmsRouter.put("/structure-curriculum/:id", handleApiRequest);
 cmsRouter.delete("/structure-curriculum/:id", handleApiRequest);
 
-
 cmsRouter.get("/teacher-schedule/:teacher_id", handleApiRequest);
 cmsRouter.post("/upload", handleApiRequest);
-
 
 export default cmsRouter;
